@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Computers That Took Us to the Moon — Then and Now</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+/* ─── RESET ──────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:#f8f7f4;
+  color:#1c1c1e;
+  font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif;
+  font-size:17px;
+  line-height:1.75;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ─── TOKENS ─────────────────────────────────────── */
+:root{
+  --gold:#b5620a; --gold-l:#fef3e2; --gold-m:#f0c97a;
+  --blue:#0a4b8c; --blue-l:#e8f1fb; --blue-m:#9ec3ee;
+  --ink:#1c1c1e; --ink2:#3a3a3c; --ink3:#636366;
+  --rule:#dddbd5; --bg:#f8f7f4; --bg2:#f0ede6; --white:#ffffff;
+  --r:10px; --max:760px;
+  --font-serif:'Source Serif 4',Georgia,serif;
+  --font-sans:'Plus Jakarta Sans',system-ui,sans-serif;
+}
+
+/* ─── SHARED TYPOGRAPHY ──────────────────────────── */
+h1,h2{font-family:var(--font-serif);line-height:1.2;color:var(--ink);}
+h1{font-size:clamp(1.75rem,5.5vw,2.7rem);font-weight:700;}
+h2{font-size:clamp(1.2rem,4vw,1.6rem);font-weight:600;}
+h3{font-size:1rem;font-weight:700;color:var(--ink);font-family:var(--font-sans);letter-spacing:-.01em;}
+p{color:var(--ink2);margin-bottom:18px;font-size:1rem;}
+p:last-child{margin-bottom:0;}
+strong{color:var(--ink);font-weight:600;}
+a{color:var(--blue);text-underline-offset:3px;}
+
+/* ─── LAYOUT ─────────────────────────────────────── */
+.wrap{max-width:var(--max);margin:0 auto;padding:0 20px;}
+
+/* ─── PROGRESS ───────────────────────────────────── */
+#progress{
+  position:fixed;top:0;left:0;height:3px;z-index:300;
+  background:linear-gradient(90deg,var(--gold),var(--blue));
+  width:0%;transition:width .1s linear;
+}
+
+/* ─── HEADER / NAV ───────────────────────────────── */
+.site-header{
+  background:var(--white);border-bottom:1px solid var(--rule);
+  position:sticky;top:0;z-index:200;
+}
+.header-inner{
+  max-width:var(--max);margin:0 auto;
+  display:flex;flex-direction:column;
+}
+.header-top{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 20px;height:52px;gap:12px;
+}
+.site-title{font-size:14px;font-weight:700;color:var(--ink3);}
+
+/* ─── TABS ───────────────────────────────────────── */
+.tab-bar{
+  display:flex;padding:0 20px;gap:0;
+  border-top:1px solid var(--rule);
+}
+.tab-btn{
+  font-family:var(--font-sans);font-size:14px;font-weight:600;
+  padding:11px 20px;border:none;background:none;cursor:pointer;
+  color:var(--ink3);border-bottom:3px solid transparent;
+  transition:color .15s,border-color .15s;white-space:nowrap;
+  margin-bottom:-1px;
+}
+.tab-btn:hover{color:var(--ink);}
+.tab-btn.active{color:var(--blue);border-bottom-color:var(--blue);}
+.tab-btn .tab-hint{
+  font-size:11px;font-weight:400;color:var(--ink3);
+  display:block;line-height:1;margin-top:1px;
+}
+.tab-btn.active .tab-hint{color:var(--blue-m);}
+
+/* ─── TAB PANELS ─────────────────────────────────── */
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+/* ════════════════════════════════════════════════════
+   SUMMARY TAB
+════════════════════════════════════════════════════ */
+
+/* Hero — compact */
+.s-hero{
+  padding:36px 20px 32px;
+  max-width:var(--max);margin:0 auto;
+  border-bottom:1px solid var(--rule);
+}
+.s-hero-kicker{
+  font-size:12px;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:12px;display:block;
+}
+.s-hero h1{margin-bottom:10px;}
+.s-hero-sub{font-size:15px;color:var(--ink3);line-height:1.6;max-width:560px;}
+
+/* Section headings in summary */
+.s-section{padding:32px 20px 0;max-width:var(--max);margin:0 auto;}
+.s-section:last-of-type{padding-bottom:40px;}
+.s-label{
+  font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink3);margin-bottom:8px;
+}
+.s-title{
+  font-family:var(--font-serif);font-size:clamp(1.15rem,3.5vw,1.4rem);
+  font-weight:600;color:var(--ink);margin-bottom:20px;line-height:1.3;
+}
+
+/* ── COMPARISON HERO CARDS ── */
+.era-cards{
+  display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:4px;
+}
+@media(max-width:480px){.era-cards{grid-template-columns:1fr;}}
+
+.era-card{
+  border-radius:var(--r);padding:20px;border:1px solid var(--rule);
+  background:var(--white);
+}
+.era-card.apollo{border-top:4px solid var(--gold);}
+.era-card.artemis{border-top:4px solid var(--blue);}
+
+.era-badge{
+  font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  margin-bottom:14px;display:flex;align-items:center;gap:6px;
+}
+.era-badge.a{color:var(--gold);}
+.era-badge.b{color:var(--blue);}
+.era-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.era-dot.a{background:var(--gold);}
+.era-dot.b{background:var(--blue);}
+
+.era-name{
+  font-family:var(--font-serif);font-size:1.15rem;font-weight:700;
+  color:var(--ink);margin-bottom:4px;
+}
+.era-desc{font-size:13px;color:var(--ink3);line-height:1.5;margin-bottom:16px;}
+
+.era-specs{}
+.era-spec-row{
+  display:flex;justify-content:space-between;align-items:baseline;
+  padding:7px 0;border-bottom:1px solid var(--rule);gap:8px;font-size:14px;
+}
+.era-spec-row:last-child{border-bottom:none;}
+.era-spec-k{color:var(--ink3);font-size:12px;flex-shrink:0;}
+.era-spec-v{color:var(--ink);font-weight:600;text-align:right;font-size:13px;}
+.era-spec-v.a{color:var(--gold);}
+.era-spec-v.b{color:var(--blue);}
+
+/* ── BIG NUMBER COMPARISONS ── */
+.big-comps{display:flex;flex-direction:column;gap:14px;margin-top:4px;}
+
+.big-comp{
+  background:var(--white);border:1px solid var(--rule);border-radius:var(--r);
+  padding:18px 20px;
+}
+.big-comp-label{
+  font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--ink3);margin-bottom:14px;
+}
+.big-comp-bars{display:flex;flex-direction:column;gap:10px;}
+.bar-row{display:flex;flex-direction:column;gap:4px;}
+.bar-meta{display:flex;justify-content:space-between;align-items:baseline;}
+.bar-name{font-size:13px;font-weight:600;color:var(--ink);}
+.bar-val{font-size:13px;color:var(--ink3);}
+.bar-track{
+  height:10px;background:var(--bg2);border-radius:99px;overflow:hidden;
+}
+.bar-fill{
+  height:100%;border-radius:99px;
+  transition:width 1s cubic-bezier(.22,1,.36,1);
+}
+.bar-fill.a{background:linear-gradient(90deg,var(--gold-m),var(--gold));}
+.bar-fill.b{background:linear-gradient(90deg,var(--blue-m),var(--blue));}
+
+/* ── RADAR / HOW DIFFERENT CHART ── */
+.chart-card{
+  background:var(--white);border:1px solid var(--rule);border-radius:var(--r);
+  padding:20px;
+}
+.chart-card-title{
+  font-size:13px;font-weight:700;color:var(--ink3);letter-spacing:.06em;
+  text-transform:uppercase;margin-bottom:6px;
+}
+.chart-card-sub{font-size:13px;color:var(--ink3);margin-bottom:18px;line-height:1.5;}
+.chart-h{position:relative;}
+.chart-h-280{height:280px;}
+.chart-h-220{height:220px;}
+.chart-note{
+  margin-top:12px;font-size:13px;color:var(--ink3);line-height:1.6;
+  padding-top:12px;border-top:1px solid var(--rule);
+}
+
+/* ── KEY FACTS ── */
+.facts-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:10px;
+}
+.fact-card{
+  background:var(--white);border:1px solid var(--rule);border-radius:var(--r);
+  padding:16px;
+}
+.fact-icon{font-size:22px;margin-bottom:8px;}
+.fact-title{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:4px;}
+.fact-body{font-size:13px;color:var(--ink3);line-height:1.5;}
+
+/* ── MEMORY VISUAL ── */
+.memory-visual{
+  background:var(--white);border:1px solid var(--rule);border-radius:var(--r);
+  padding:20px;
+}
+.mem-label{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);margin-bottom:16px;}
+.mem-row{display:flex;flex-direction:column;gap:12px;}
+.mem-item{display:flex;flex-direction:column;gap:5px;}
+.mem-meta{display:flex;justify-content:space-between;align-items:center;}
+.mem-name{font-size:14px;font-weight:600;color:var(--ink);}
+.mem-size{font-size:14px;font-weight:700;}
+.mem-size.a{color:var(--gold);}
+.mem-size.b{color:var(--blue);}
+.mem-bar-wrap{height:14px;background:var(--bg2);border-radius:99px;overflow:hidden;position:relative;}
+.mem-bar{height:100%;border-radius:99px;transition:width 1.2s cubic-bezier(.22,1,.36,1);}
+.mem-bar.a{background:linear-gradient(90deg,var(--gold-m),var(--gold));}
+.mem-bar.b{background:linear-gradient(90deg,var(--blue-m),var(--blue));}
+.mem-context{font-size:12px;color:var(--ink3);}
+
+/* ── TIMELINE STRIP ── */
+.timeline-strip{
+  display:flex;flex-direction:column;gap:0;
+  background:var(--white);border:1px solid var(--rule);border-radius:var(--r);
+  overflow:hidden;
+}
+.tl-row{
+  display:flex;align-items:flex-start;gap:16px;
+  padding:14px 18px;border-bottom:1px solid var(--rule);
+}
+.tl-row:last-child{border-bottom:none;}
+.tl-year{
+  font-size:12px;font-weight:700;color:var(--ink3);white-space:nowrap;
+  min-width:52px;padding-top:2px;
+}
+.tl-dot-wrap{display:flex;flex-direction:column;align-items:center;padding-top:3px;}
+.tl-pip{width:12px;height:12px;border-radius:50%;flex-shrink:0;}
+.tl-pip.ga{background:var(--gold);}
+.tl-pip.gb{background:var(--blue);}
+.tl-pip.gn{background:#aaa;}
+.tl-body{}
+.tl-event{font-size:14px;font-weight:600;color:var(--ink);line-height:1.4;margin-bottom:2px;}
+.tl-detail{font-size:13px;color:var(--ink3);line-height:1.5;}
+
+/* ── MYTH BUSTERS ── */
+.myths{display:flex;flex-direction:column;gap:10px;}
+.myth{
+  background:var(--white);border:1px solid var(--rule);border-radius:var(--r);
+  padding:16px 18px;
+}
+.myth-head{display:flex;align-items:flex-start;gap:10px;margin-bottom:6px;}
+.myth-x{
+  flex-shrink:0;width:22px;height:22px;border-radius:50%;
+  background:#fde8e8;color:#c0392b;font-size:13px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;margin-top:1px;
+}
+.myth-check{
+  flex-shrink:0;width:22px;height:22px;border-radius:50%;
+  background:#e6f4ea;color:#27ae60;font-size:13px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;margin-top:1px;
+}
+.myth-claim{font-size:14px;font-weight:600;color:var(--ink);line-height:1.4;}
+.myth-truth{font-size:13px;color:var(--ink3);line-height:1.55;padding-left:32px;}
+
+/* ── REDUNDANCY VISUAL ── */
+.redundancy-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:480px){.redundancy-grid{grid-template-columns:1fr;}}
+.red-panel{
+  background:var(--white);border:1px solid var(--rule);border-radius:var(--r);padding:16px;
+}
+.red-title{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px;}
+.red-title.a{color:var(--gold);}
+.red-title.b{color:var(--blue);}
+.red-diagram{display:flex;flex-direction:column;align-items:center;gap:4px;}
+.rd-node{
+  border-radius:7px;padding:8px 14px;font-size:13px;font-weight:600;
+  text-align:center;width:100%;border:1px solid var(--rule);
+  background:var(--bg2);color:var(--ink2);
+}
+.rd-node.main-a{background:var(--gold-l);border-color:var(--gold-m);color:var(--gold);}
+.rd-node.main-b{background:var(--blue-l);border-color:var(--blue-m);color:var(--blue);}
+.rd-node.sub{font-size:12px;opacity:.7;font-style:italic;}
+.rd-node.bus{background:#e8f5e9;border-color:#a5d6a7;color:#2e7d32;font-size:12px;}
+.rd-row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:4px;width:100%;}
+.rd-row .rd-node{font-size:11px;padding:6px 4px;}
+.rd-arrow{color:#ccc;font-size:16px;}
+.red-note{margin-top:12px;font-size:12px;color:var(--ink3);line-height:1.5;padding-top:10px;border-top:1px solid var(--rule);}
+
+/* ─── SHARED HR ──────────────────────────────────── */
+.s-divider{border:none;border-top:1px solid var(--rule);margin:0 20px;}
+
+/* ════════════════════════════════════════════════════
+   DEEP DIVE TAB
+════════════════════════════════════════════════════ */
+.section{
+  padding:0 20px;max-width:var(--max);margin:0 auto 60px;
+  opacity:0;transform:translateY(22px);
+  transition:opacity .55s ease,transform .55s ease;
+}
+.section.vis{opacity:1;transform:none;}
+.section-label{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:8px;}
+
+.hero-dd{padding:44px 20px 36px;max-width:var(--max);margin:0 auto;}
+.hero-dd .kicker{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:12px;}
+.hero-dd h1{margin-bottom:10px;}
+.hero-dd .lead{font-size:1.05rem;color:var(--ink3);line-height:1.75;max-width:560px;margin-bottom:24px;}
+.hero-dd .byline{font-size:14px;color:var(--ink3);border-top:1px solid var(--rule);padding-top:16px;display:flex;flex-wrap:wrap;gap:14px;}
+
+.pull{border-left:4px solid var(--gold);padding:18px 20px;margin:28px 0;background:var(--gold-l);border-radius:0 var(--r) var(--r) 0;}
+.pull p{font-family:var(--font-serif);font-size:1.05rem;font-style:italic;color:var(--ink);line-height:1.7;}
+.pull .attr{font-family:var(--font-sans);font-size:13px;color:var(--ink3);font-style:normal;margin-top:10px;}
+
+.note{border-left:4px solid var(--blue);padding:18px 20px;margin:28px 0;background:var(--blue-l);border-radius:0 var(--r) var(--r) 0;}
+.note p{font-size:.97rem;color:var(--ink);line-height:1.75;}
+.note strong{color:var(--blue);}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px;margin:28px 0;}
+.stat{background:var(--white);border:1px solid var(--rule);border-radius:var(--r);padding:18px 14px;text-align:center;}
+.stat.ga{border-top:3px solid var(--gold);}
+.stat.gb{border-top:3px solid var(--blue);}
+.stat-n{font-family:var(--font-serif);font-size:1.85rem;font-weight:700;line-height:1.1;margin-bottom:6px;}
+.stat-n.ca{color:var(--gold);}
+.stat-n.cb{color:var(--blue);}
+.stat-l{font-size:13px;color:var(--ink3);line-height:1.45;}
+
+.ctable{width:100%;border-collapse:collapse;margin:24px 0;font-size:15px;background:var(--white);border:1px solid var(--rule);border-radius:var(--r);overflow:hidden;}
+.ctable thead th{padding:12px 14px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;background:var(--bg2);color:var(--ink3);border-bottom:1px solid var(--rule);}
+.ctable tbody td{padding:13px 14px;border-bottom:1px solid var(--rule);vertical-align:top;line-height:1.55;color:var(--ink2);}
+.ctable tbody tr:last-child td{border-bottom:none;}
+.ctable tbody tr:hover td{background:var(--bg2);}
+.ctable td:first-child{font-size:12px;color:var(--ink3);font-weight:700;white-space:nowrap;width:100px;}
+.col-a{color:var(--gold)!important;}
+.col-b{color:var(--blue)!important;}
+@media(max-width:520px){
+  .ctable thead{display:none;}
+  .ctable,.ctable tbody,.ctable tr,.ctable td{display:block;width:100%;}
+  .ctable tr{border-bottom:1px solid var(--rule);padding:12px 0;}
+  .ctable tr:last-child{border:none;}
+  .ctable td{border:none;padding:3px 14px;font-size:14px;}
+  .ctable td:first-child{width:auto;font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding-top:12px;white-space:normal;}
+  .ctable td:nth-child(2)::before{content:"Apollo: ";font-weight:700;color:var(--gold);}
+  .ctable td:nth-child(3)::before{content:"Artemis: ";font-weight:700;color:var(--blue);}
+}
+
+.acc{border:1px solid var(--rule);border-radius:var(--r);overflow:hidden;margin:24px 0;background:var(--white);}
+.acc-item{border-bottom:1px solid var(--rule);}
+.acc-item:last-child{border-bottom:none;}
+.acc-btn{
+  width:100%;background:none;border:none;padding:17px 18px;text-align:left;
+  font-family:var(--font-sans);font-size:1rem;font-weight:600;color:var(--ink);
+  cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;
+  transition:background .15s;line-height:1.4;
+}
+.acc-btn:hover{background:var(--bg2);}
+.acc-arr{color:var(--ink3);font-size:20px;transition:transform .25s;flex-shrink:0;}
+.acc-btn.open .acc-arr{transform:rotate(180deg);}
+.acc-body{max-height:0;overflow:hidden;transition:max-height .35s ease;}
+.acc-in{padding:6px 20px 20px;font-size:15px;color:var(--ink2);line-height:1.78;}
+.acc-in p{margin-bottom:14px;}
+.acc-in p:last-child{margin-bottom:0;}
+
+.ddc-wrap{background:var(--white);border:1px solid var(--rule);border-radius:var(--r);padding:20px;margin:24px 0;}
+.ddc-tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;}
+.ddc-tab{font-family:var(--font-sans);font-size:13px;font-weight:600;padding:7px 15px;border-radius:20px;border:1.5px solid var(--rule);background:var(--bg);color:var(--ink3);cursor:pointer;transition:all .15s;}
+.ddc-tab:hover{border-color:var(--blue);color:var(--blue);}
+.ddc-tab.on{background:var(--blue);border-color:var(--blue);color:#fff;}
+.ddc-chart-h{position:relative;height:260px;}
+.ddc-cap{margin-top:14px;font-size:14px;color:var(--ink3);line-height:1.65;padding-top:12px;border-top:1px solid var(--rule);}
+
+.arch-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:24px 0;}
+@media(max-width:540px){.arch-grid{grid-template-columns:1fr;}}
+.arch-p{background:var(--white);border:1px solid var(--rule);border-radius:var(--r);padding:18px;}
+.arch-hd{font-size:12px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid;}
+.arch-hd.ga{color:var(--gold);border-color:var(--gold-m);}
+.arch-hd.gb{color:var(--blue);border-color:var(--blue-m);}
+.an{background:var(--bg2);border:1px solid var(--rule);border-radius:7px;padding:9px 12px;font-size:13px;color:var(--ink2);text-align:center;margin:5px 0;line-height:1.4;}
+.an.pa{background:var(--gold-l);border-color:var(--gold-m);color:var(--gold);font-weight:600;}
+.an.pb{background:var(--blue-l);border-color:var(--blue-m);color:var(--blue);font-weight:600;}
+.an.dim{opacity:.6;font-style:italic;font-size:12px;}
+.an.bus{background:#e8f5e9;border-color:#a5d6a7;color:#2e7d32;font-weight:600;font-size:12px;}
+.arc{display:flex;justify-content:center;color:#bbb;font-size:20px;margin:1px 0;}
+.an-row{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin:5px 0;}
+.arch-note{margin-top:12px;font-size:13px;color:var(--ink3);line-height:1.55;padding-top:10px;border-top:1px solid var(--rule);}
+
+.tl{position:relative;padding-left:28px;margin:24px 0;}
+.tl::before{content:'';position:absolute;left:7px;top:8px;bottom:8px;width:2px;background:var(--rule);}
+.tl-i{position:relative;margin-bottom:28px;}
+.tl-i:last-child{margin-bottom:0;}
+.tl-dot{position:absolute;left:-24px;top:6px;width:14px;height:14px;border-radius:50%;border:2px solid var(--bg);}
+.tl-dot.ga{background:var(--gold);box-shadow:0 0 0 2px var(--gold-m);}
+.tl-dot.gb{background:var(--blue);box-shadow:0 0 0 2px var(--blue-m);}
+.tl-dot.gn{background:#999;box-shadow:0 0 0 2px #ccc;}
+.tl-yr{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);margin-bottom:4px;}
+.tl-t{font-size:15px;color:var(--ink2);line-height:1.65;}
+
+.ibox{background:var(--bg2);border:1px solid var(--rule);border-radius:var(--r);padding:20px 22px;margin:28px 0;}
+.ibox-hd{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:12px;}
+
+footer{border-top:1px solid var(--rule);padding:28px 20px;text-align:center;font-size:14px;color:var(--ink3);line-height:1.8;max-width:var(--max);margin:0 auto;}
+footer a{color:var(--blue);}
+
+hr.sec{border:none;border-top:1px solid var(--rule);margin:48px 0;}
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="header-top">
+      <span class="site-title">Spaceflight Computing</span>
+    </div>
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="switchTab('summary',this)">
+        Overview
+        <span class="tab-hint">4-min visual summary</span>
+      </button>
+      <button class="tab-btn" onclick="switchTab('deepdive',this)">
+        Deep Dive
+        <span class="tab-hint">Full technical read</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ════════════════════════════════════════════════
+     SUMMARY TAB
+════════════════════════════════════════════════ -->
+<div id="tab-summary" class="tab-panel active">
+
+  <!-- Hero -->
+  <div class="s-hero">
+    <span class="s-hero-kicker">Apollo 1969 → Artemis 2022</span>
+    <h1>60 years of spaceflight computing</h1>
+    <p class="s-hero-sub">How the computers guiding humans to the Moon evolved from a hand-woven shoebox to a distributed network of 9 processors.</p>
+  </div>
+
+  <!-- 1. ERA CARDS -->
+  <div class="s-section">
+    <p class="s-label">The two eras at a glance</p>
+    <div class="era-cards">
+      <div class="era-card apollo">
+        <div class="era-badge a"><span class="era-dot a"></span>Apollo · 1969</div>
+        <div class="era-name">Apollo Guidance Computer</div>
+        <div class="era-desc">One custom-built computer. 55 watts. Its program was hand-woven into magnetic rings.</div>
+        <div class="era-specs">
+          <div class="era-spec-row"><span class="era-spec-k">Speed</span><span class="era-spec-v a">~43,000 IPS</span></div>
+          <div class="era-spec-row"><span class="era-spec-k">RAM</span><span class="era-spec-v a">4 KB</span></div>
+          <div class="era-spec-row"><span class="era-spec-k">Storage</span><span class="era-spec-v a">~72 KB</span></div>
+          <div class="era-spec-row"><span class="era-spec-k">Computers</span><span class="era-spec-v a">1 primary</span></div>
+          <div class="era-spec-row"><span class="era-spec-k">Code</span><span class="era-spec-v a">~145,000 lines</span></div>
+          <div class="era-spec-row"><span class="era-spec-k">Downlink</span><span class="era-spec-v a">51 kbps</span></div>
+        </div>
+      </div>
+      <div class="era-card artemis">
+        <div class="era-badge b"><span class="era-dot b"></span>Artemis · 2022</div>
+        <div class="era-name">Orion Vehicle Management Computer</div>
+        <div class="era-desc">Five computers, nine processors. Gigabit network. 2.3 million lines of code.</div>
+        <div class="era-specs">
+          <div class="era-spec-row"><span class="era-spec-k">Speed</span><span class="era-spec-v b">~650 MIPS est.</span></div>
+          <div class="era-spec-row"><span class="era-spec-k">RAM</span><span class="era-spec-v b">~512 MB est.</span></div>
+          <div class="era-spec-row"><span class="era-spec-k">Network</span><span class="era-spec-v b">1 Gbps TT-GbE</span></div>
+          <div class="era-spec-row"><span class="era-spec-k">Computers</span><span class="era-spec-v b">4 + 1 backup</span></div>
+          <div class="era-spec-row"><span class="era-spec-k">Code</span><span class="era-spec-v b">~2.3M lines</span></div>
+          <div class="era-spec-row"><span class="era-spec-k">Downlink</span><span class="era-spec-v b">260 Mbps optical</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="s-divider">
+
+  <!-- 2. HOW MUCH BIGGER — bar comparisons -->
+  <div class="s-section">
+    <p class="s-label">Scale of improvement</p>
+    <p class="s-title" style="margin-bottom:8px;">How much more powerful is Artemis?</p>
+    <p style="font-size:14px;color:var(--ink3);margin-bottom:20px;line-height:1.6;">Each bar is drawn proportionally on a logarithmic scale — because some gaps are so large a normal chart would make Apollo invisible.</p>
+
+    <div class="big-comps">
+
+      <div class="big-comp">
+        <div class="big-comp-label">Processing Speed</div>
+        <div class="big-comp-bars">
+          <div class="bar-row">
+            <div class="bar-meta"><span class="bar-name">🌑 Apollo AGC</span><span class="bar-val">~43,000 instr/sec</span></div>
+            <div class="bar-track"><div class="bar-fill a" style="width:0%" data-w="0.8%"></div></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-meta"><span class="bar-name">🚀 Orion VMC</span><span class="bar-val">~650,000,000 instr/sec</span></div>
+            <div class="bar-track"><div class="bar-fill b" style="width:0%" data-w="100%"></div></div>
+          </div>
+          <div style="font-size:13px;color:var(--ink3);margin-top:4px;">≈ <strong style="color:var(--blue)">15,000× faster</strong> — equivalent to going from a bicycle to a commercial jet</div>
+        </div>
+      </div>
+
+      <div class="big-comp">
+        <div class="big-comp-label">Working Memory (RAM)</div>
+        <div class="big-comp-bars">
+          <div class="bar-row">
+            <div class="bar-meta"><span class="bar-name">🌑 Apollo AGC</span><span class="bar-val">4 KB</span></div>
+            <div class="bar-track"><div class="bar-fill a" style="width:0%" data-w="0.6%"></div></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-meta"><span class="bar-name">🚀 Orion VMC</span><span class="bar-val">~512 MB (est.)</span></div>
+            <div class="bar-track"><div class="bar-fill b" style="width:0%" data-w="100%"></div></div>
+          </div>
+          <div style="font-size:13px;color:var(--ink3);margin-top:4px;">≈ <strong style="color:var(--blue)">131,000× more</strong> — a typical email is larger than Apollo's entire memory</div>
+        </div>
+      </div>
+
+      <div class="big-comp">
+        <div class="big-comp-label">Radio Downlink Speed</div>
+        <div class="big-comp-bars">
+          <div class="bar-row">
+            <div class="bar-meta"><span class="bar-name">🌑 Apollo S-Band</span><span class="bar-val">51 kbps</span></div>
+            <div class="bar-track"><div class="bar-fill a" style="width:0%" data-w="1%"></div></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-meta"><span class="bar-name">🚀 Artemis Optical</span><span class="bar-val">260 Mbps</span></div>
+            <div class="bar-track"><div class="bar-fill b" style="width:0%" data-w="100%"></div></div>
+          </div>
+          <div style="font-size:13px;color:var(--ink3);margin-top:4px;">≈ <strong style="color:var(--blue)">5,000× more bandwidth</strong> — from dial-up modem to fiber broadband, from the Moon</div>
+        </div>
+      </div>
+
+      <div class="big-comp">
+        <div class="big-comp-label">Software Size</div>
+        <div class="big-comp-bars">
+          <div class="bar-row">
+            <div class="bar-meta"><span class="bar-name">🌑 Apollo (both programs)</span><span class="bar-val">~145,000 lines</span></div>
+            <div class="bar-track"><div class="bar-fill a" style="width:0%" data-w="6.3%"></div></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-meta"><span class="bar-name">🚀 Orion alone</span><span class="bar-val">~2.3 million lines</span></div>
+            <div class="bar-track"><div class="bar-fill b" style="width:0%" data-w="100%"></div></div>
+          </div>
+          <div style="font-size:13px;color:var(--ink3);margin-top:4px;">≈ <strong style="color:var(--blue)">16× more code</strong> — but proportionally the smallest gap of all four metrics</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <hr class="s-divider">
+
+  <!-- 3. HOW REDUNDANCY WORKS -->
+  <div class="s-section">
+    <p class="s-label">Handling failure</p>
+    <p class="s-title">What happens when a computer breaks mid-mission?</p>
+
+    <div class="redundancy-grid">
+      <div class="red-panel">
+        <div class="red-title a">Apollo approach</div>
+        <div class="red-diagram">
+          <div class="rd-node">Analog sensors</div>
+          <div class="rd-arrow">↓</div>
+          <div class="rd-node main-a">One AGC<br><small style="font-weight:400;font-size:11px;">Self-recovering OS</small></div>
+          <div class="rd-arrow">↓</div>
+          <div class="rd-node sub">AGS Backup<br><small>(abort only)</small></div>
+          <div class="rd-arrow">↓</div>
+          <div class="rd-node">Thrusters</div>
+        </div>
+        <div class="red-note">If the AGC crashed during lunar descent, the mission aborted. Recovery relied on the OS's ability to shed tasks — and on astronaut skill. Worked every time across 17 crewed missions.</div>
+      </div>
+
+      <div class="red-panel">
+        <div class="red-title b">Orion approach</div>
+        <div class="red-diagram">
+          <div class="rd-node bus">TT-GbE Network · 1 Gbps</div>
+          <div class="rd-arrow">↓</div>
+          <div class="rd-row">
+            <div class="rd-node main-b">VMC1</div>
+            <div class="rd-node main-b">VMC2</div>
+            <div class="rd-node main-b">VMC3</div>
+            <div class="rd-node main-b">VMC4</div>
+          </div>
+          <div class="rd-arrow">↓</div>
+          <div class="rd-node sub">Backup<br><small>(different software)</small></div>
+          <div class="rd-arrow">↓</div>
+          <div class="rd-node">Priority tables → Engines</div>
+        </div>
+        <div class="red-note">All 4 VMCs run simultaneously. "Smart switchboards" (PDUs) use priority tables — VMC1 first, then auto-fallback. If all 4 fail, a 5th with different code takes over. <em>No voting — each computer thinks it's in charge.</em></div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="s-divider">
+
+  <!-- 4. KEY FACTS -->
+  <div class="s-section">
+    <p class="s-label">Things worth knowing</p>
+    <p class="s-title">5 facts that explain the whole story</p>
+    <div class="facts-grid">
+      <div class="fact-card">
+        <div class="fact-icon">🧵</div>
+        <div class="fact-title">Apollo's memory was woven by hand</div>
+        <div class="fact-body">Core rope memory was literally threaded by textile workers — wire through a ring = 1, bypass = 0. 8 weeks per module. Impossible to update after launch. But completely immune to cosmic ray bit-flips.</div>
+      </div>
+      <div class="fact-card">
+        <div class="fact-icon">⚠️</div>
+        <div class="fact-title">The AGC crashed 5 times on Apollo 11 — and saved itself</div>
+        <div class="fact-body">During the final landing, overflow alarms fired 5 times. The OS automatically shed low-priority tasks each time and kept guidance running. Armstrong landed with 17 seconds of fuel left.</div>
+      </div>
+      <div class="fact-card">
+        <div class="fact-icon">👁️</div>
+        <div class="fact-title">Apollo had no hazard detection</div>
+        <div class="fact-body">No cameras, no LIDAR, no AI. Astronauts used a scale etched in the window to see where the computer was targeting, then hand-flew to avoid boulders. Armstrong dodged a crater by eye.</div>
+      </div>
+      <div class="fact-card">
+        <div class="fact-icon">📡</div>
+        <div class="fact-title">Apollo's signals were unencrypted — and the Soviets listened</div>
+        <div class="fact-body">Deliberate choice: encryption adds weight and failure modes. The USSR intercepted every Apollo transmission. Jodrell Bank did too. In 2022, encryption is legally mandated (AES/FIPS 140).</div>
+      </div>
+      <div class="fact-card">
+        <div class="fact-icon">🏭</div>
+        <div class="fact-title">Orion's processor is a ruggedized commercial chip</div>
+        <div class="fact-body">Not the exotic $200K radiation-hardened RAD750 — it's the IBM PowerPC 750FX, the same chip family used in the Apple Power Mac G4, hardened by Honeywell. Good enough for the mission profile, a fraction of the cost.</div>
+      </div>
+      <div class="fact-card">
+        <div class="fact-icon">💡</div>
+        <div class="fact-title">Apollo's computer used the same power as a lightbulb</div>
+        <div class="fact-body">55 watts. 32 kg. Today's equivalent Orion VMC uses ~20–30W and weighs far less — but delivers roughly 33,000× more compute per watt. The efficiency gain dwarfs the raw speed gain.</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="s-divider">
+
+  <!-- 5. MYTH BUSTERS -->
+  <div class="s-section">
+    <p class="s-label">Common misconceptions</p>
+    <p class="s-title">What most people get wrong</p>
+    <div class="myths">
+      <div class="myth">
+        <div class="myth-head">
+          <div class="myth-x">✗</div>
+          <div class="myth-claim">"Orion's computers vote on every decision, like the Space Shuttle"</div>
+        </div>
+        <div class="myth-truth">False. SLS (the rocket) uses voting. Orion does not — each of its 4 computers acts independently. Smart switchboards (PDUs) use a priority list to decide which computer's output to follow. If Computer 1 goes silent, they fall through to 2, 3, then 4. No vote ever happens.</div>
+      </div>
+      <div class="myth">
+        <div class="myth-head">
+          <div class="myth-x">✗</div>
+          <div class="myth-claim">"Orion uses the radiation-hardened BAE RAD750 processor"</div>
+        </div>
+        <div class="myth-truth">Incorrect. Orion uses the IBM PowerPC 750FX — a commercial chip that Honeywell ruggedizes with better boards, vibration resistance, and radiation screening. The RAD750 (used on Curiosity, MRO) is a completely different, much more expensive part designed from the ground up for radiation hardness.</div>
+      </div>
+      <div class="myth">
+        <div class="myth-head">
+          <div class="myth-x">✗</div>
+          <div class="myth-claim">"Artemis has AI that automatically avoids craters during landing"</div>
+        </div>
+        <div class="myth-truth">Not on Orion — Orion doesn't land on the Moon. Autonomous hazard avoidance belongs to the separate Human Landing System (HLS) landers like SpaceX's Starship HLS. These use cameras + LIDAR + Terrain Relative Navigation to autonomously avoid boulders. Orion just orbits and comes home.</div>
+      </div>
+      <div class="myth">
+        <div class="myth-head">
+          <div class="myth-x">✗</div>
+          <div class="myth-claim">"The AGC processed 85,000 instructions per second"</div>
+        </div>
+        <div class="myth-truth">Only for the simplest single-cycle instructions. Real mixed workloads (including arithmetic) averaged ~40,000–43,000 IPS. Multiply operations ran at just ~21,000 per second. The 85K figure is peak, not typical.</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="s-divider">
+
+  <!-- 6. TIMELINE -->
+  <div class="s-section">
+    <p class="s-label">History</p>
+    <p class="s-title">Key milestones</p>
+    <div class="timeline-strip">
+      <div class="tl-row">
+        <div class="tl-year">1961–65</div>
+        <div class="tl-dot-wrap"><div class="tl-pip ga"></div></div>
+        <div class="tl-body">
+          <div class="tl-event">MIT builds the AGC</div>
+          <div class="tl-detail">One of the first integrated-circuit computers ever built. Coins the term "software engineering." Takes 1,400 person-years of effort.</div>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-year">Jul 1969</div>
+        <div class="tl-dot-wrap"><div class="tl-pip ga"></div></div>
+        <div class="tl-body">
+          <div class="tl-event">Apollo 11 — first Moon landing</div>
+          <div class="tl-detail">AGC throws 5 overflow alarms during descent, recovers each time. Armstrong hand-flies around a boulder field. 17 seconds of fuel remaining at touchdown.</div>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-year">1981–2011</div>
+        <div class="tl-dot-wrap"><div class="tl-pip gn"></div></div>
+        <div class="tl-body">
+          <div class="tl-event">Space Shuttle — first true voting architecture</div>
+          <div class="tl-detail">Five computers run identical software and vote on every output. A fifth runs independently-written backup code. This is the architecture people mistakenly attribute to Orion.</div>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-year">Dec 2014</div>
+        <div class="tl-dot-wrap"><div class="tl-pip gb"></div></div>
+        <div class="tl-body">
+          <div class="tl-event">Orion EFT-1 — first flight of Honeywell VMCs and TT-GbE</div>
+          <div class="tl-detail">The new architecture flies for the first time, unmanned. Time-Triggered Gigabit Ethernet debuts in spaceflight.</div>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-year">Nov 2022</div>
+        <div class="tl-dot-wrap"><div class="tl-pip gb"></div></div>
+        <div class="tl-body">
+          <div class="tl-event">Artemis I — full 4+1 VMC configuration flies</div>
+          <div class="tl-detail">Uncrewed Orion completes a 25-day lunar flyby. 2.3 million lines of flight software perform without fault.</div>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-year">2025</div>
+        <div class="tl-dot-wrap"><div class="tl-pip gb"></div></div>
+        <div class="tl-body">
+          <div class="tl-event">Artemis II — first crewed Orion (planned)</div>
+          <div class="tl-detail">Four astronauts on a lunar flyby. Optical laser communications system targets 260 Mbps downlink from deep space.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="max-width:var(--max);margin:0 auto;">
+    <footer>
+      <p>All figures verified against primary sources including NASA avionics documentation, MIT archives, and a 2015 <em>Military Embedded Systems</em> interview with NASA's Matthew Lemke confirming the PowerPC 750FX and priority failover architecture.</p>
+      <p style="margin-top:6px;"><button onclick="switchTab('deepdive',document.querySelectorAll('.tab-btn')[1])" style="background:none;border:none;color:var(--blue);font-size:14px;cursor:pointer;text-decoration:underline;text-underline-offset:3px;font-family:var(--font-sans);">Read the full technical deep dive →</button></p>
+    </footer>
+  </div>
+</div><!-- /tab-summary -->
+
+
+<!-- ════════════════════════════════════════════════
+     DEEP DIVE TAB
+════════════════════════════════════════════════ -->
+<div id="tab-deepdive" class="tab-panel">
+
+  <div class="hero-dd">
+    <span class="kicker">Spaceflight Computing · Full Technical Read</span>
+    <h1>The computers that took us to the Moon — and the ones going back</h1>
+    <p class="lead">In 1969, a custom 2 MHz computer with less memory than a pocket calculator guided Neil Armstrong to the lunar surface. Today's Orion spacecraft carries avionics more powerful than the Space Shuttle by a factor of 400. Here's the complete story.</p>
+    <div class="byline">
+      <span>📖 ~12 min read</span>
+      <span>🔬 Verified technical details</span>
+      <span>🚀 Apollo · Artemis</span>
+    </div>
+  </div>
+
+  <section class="section" id="apollo">
+    <div class="wrap">
+      <p class="section-label">Chapter 1</p>
+      <h2>The Apollo Guidance Computer: making miracles fit in a shoebox</h2>
+      <p>The Apollo Guidance Computer — the AGC — was built in the mid-1960s, when "computers" still filled entire rooms. Getting one small enough to fly on a spacecraft was one of the defining engineering challenges of the 20th century. The final design weighed about 32 kg and consumed just 55 watts — roughly the same as a lightbulb.</p>
+      <div class="stats">
+        <div class="stat ga"><div class="stat-n ca">2 MHz</div><div class="stat-l">Clock speed<br>(your phone: ~3,000 MHz)</div></div>
+        <div class="stat ga"><div class="stat-n ca">72 KB</div><div class="stat-l">Total program storage<br>(a typical email is larger)</div></div>
+        <div class="stat ga"><div class="stat-n ca">~43K</div><div class="stat-l">Instructions/sec<br>typical real-world throughput</div></div>
+        <div class="stat ga"><div class="stat-n ca">55 W</div><div class="stat-l">Power draw<br>(one incandescent bulb)</div></div>
+      </div>
+      <p>The AGC ran at a 2 MHz clock, but its effective throughput was closer to <strong>40,000–43,000 instructions per second</strong> for realistic workloads — simple instructions could peak at ~85,000, but arithmetic took multiple cycles. It had about <strong>72 KB of read-only program storage</strong> and just <strong>4 KB of working memory</strong>.</p>
+      <h3>The program memory was literally woven by hand</h3>
+      <p>The storage wasn't a chip — it was called <strong>core rope memory</strong>, and it was woven. Skilled workers at Raytheon's Waltham, Massachusetts plant hand-threaded wires through tiny magnetic rings: a wire through a ring meant binary 1, bypassing it meant 0. Each module took about 8 weeks to manufacture.</p>
+      <div class="pull">
+        <p>"The software had to be completely finished and frozen months before the mission. Once the wires were woven, there was no patching, no updates, no hot-fixes. What was woven was what flew."</p>
+        <p class="attr">— How core rope ROM worked at Raytheon's Waltham plant</p>
+      </div>
+      <p>The upside: core rope memory is <strong>inherently radiation-immune</strong>. Cosmic rays can flip transistor states in modern chips, but they cannot change the physical weave of a wire through a magnetic ring.</p>
+      <h3>~145,000 lines of assembly code, written on paper</h3>
+      <p>Two separate programs flew: <strong>Colossus</strong> (Command Module) and <strong>Luminary</strong> (Lunar Module). Together their assembly listings run to roughly 145,000 lines, written on paper coding pads and keypunched onto IBM cards. The project consumed approximately <strong>1,400 person-years of effort</strong> at MIT's Instrumentation Laboratory — and effectively gave birth to the term "software engineering."</p>
+      <h3>The operating system that saved Apollo 11</h3>
+      <p>What made the AGC remarkable wasn't just its hardware — it was its <strong>priority-driven operating system</strong>. The custom "Executive" OS could shed lower-priority tasks automatically when overloaded, keeping guidance and navigation running no matter what.</p>
+      <div class="note">
+        <p><strong>The 1201 and 1202 alarms — July 20, 1969:</strong> During Apollo 11's final descent, the AGC threw five "executive overflow" alarms. A rendezvous radar had been accidentally left on, flooding the computer with interrupts. Rather than crashing, the computer autonomously restarted itself five times, each time dropping the non-critical radar task and preserving the landing guidance. A 26-year-old NASA engineer named Jack Garman recognized the codes and gave the call to continue. Armstrong landed with 17 seconds of fuel to spare.</p>
+      </div>
+      <h3>How did astronauts avoid crashing into rocks?</h3>
+      <p>Their eyes. The AGC had no terrain mapping, no cameras, no automated hazard detection. The landing radar measured altitude and descent rate but couldn't detect a boulder. Instead, the Lunar Module window had a graduated scale called the <strong>Landing Point Designator (LPD)</strong> etched into it. On Apollo 11, Armstrong spotted a 180-meter crater filled with boulders and manually flew around it — piloting the last few hundred meters essentially by feel.</p>
+      <h3>What about backups?</h3>
+      <p>The AGC had no internal hardware redundancy. The Lunar Module carried an independent <strong>Abort Guidance System (AGS)</strong> built by TRW, capable of handling an abort and ascent — but not landing. Ground-based IBM System/360 mainframes at Mission Control also tracked navigation in parallel throughout every mission.</p>
+    </div>
+  </section>
+
+  <hr class="sec">
+
+  <section class="section" id="artemis">
+    <div class="wrap">
+      <p class="section-label">Chapter 2</p>
+      <h2>Artemis &amp; Orion: distributed computing for deep space</h2>
+      <p>The Artemis program uses two main vehicles: the <strong>Space Launch System (SLS)</strong> rocket and the <strong>Orion</strong> capsule. Their computing architectures are fundamentally different from Apollo's — and from each other.</p>
+      <h3>SLS: three computers, all in agreement</h3>
+      <p>The SLS core stage carries <strong>three flight computers</strong> that require agreement from at least two of three before executing any command. This 2-of-3 majority voting means a single computer glitch is automatically outvoted. SLS only flies for about 8 minutes, so its flight software is lean: around 50,000 lines of code.</p>
+      <h3>Orion: five computers — and they don't vote</h3>
+      <p>Orion carries <strong>four primary Vehicle Management Computers (VMCs) plus one backup</strong>, built by Honeywell Aerospace. The common assumption is that they vote, like SLS. They don't.</p>
+      <div class="note">
+        <p><strong>How Orion's computers actually work:</strong> Each VMC independently believes it's in charge and sends commands continuously. The <em>Power and Data Units (PDUs)</em> maintain a priority list and execute commands from Computer 1 first. If Computer 1 goes silent, the PDU automatically falls to Computer 2, then 3, then 4. If all four primary computers fail, a fifth running independently-developed software takes over. This is called <strong>priority-based failover</strong> — not consensus voting.</p>
+      </div>
+      <p>Each VMC also contains <strong>two processors in a self-checking pair</strong>: if the two disagree, that VMC stops issuing commands and resets. So Orion has 4 computers × 2 processors + 1 backup = <strong>9 processors total</strong>.</p>
+      <div class="stats">
+        <div class="stat gb"><div class="stat-n cb">5</div><div class="stat-l">Flight computers<br>(4 primary + 1 backup)</div></div>
+        <div class="stat gb"><div class="stat-n cb">~650 MIPS</div><div class="stat-l">Per computer (estimated)<br>vs. Apollo's ~43K IPS</div></div>
+        <div class="stat gb"><div class="stat-n cb">~512 MB</div><div class="stat-l">RAM per computer (est.)<br>vs. Apollo's 4 KB</div></div>
+        <div class="stat gb"><div class="stat-n cb">2.3M</div><div class="stat-l">Lines of flight software<br>in Orion alone</div></div>
+      </div>
+      <h3>The processor inside Orion</h3>
+      <p>Orion's VMCs use the <strong>IBM PowerPC 750FX</strong> — a commercial chip that Honeywell ruggedized for space with thicker circuit boards, vibration-resistant fasteners, and radiation screening. It is <em>not</em> the BAE Systems RAD750 (used on Curiosity and MRO), which costs roughly $200,000 per unit. The 750FX trades some radiation hardness for substantially higher performance — sensible for Orion's mission profile.</p>
+      <h3>The network connecting everything</h3>
+      <p>Apollo used point-to-point hardwiring. Orion uses <strong>Time-Triggered Gigabit Ethernet (TT-GbE)</strong> at 1,000 Mbps with three redundant links. Every packet arrives at an exact, pre-scheduled microsecond — no collisions, no delays. This is what keeps Orion's independent computers synchronized without voting.</p>
+      <h3>Communicating from deep space</h3>
+      <p>Apollo peaked at <strong>51.2 kbps</strong>. Artemis adds S-band, Ka-band, and an optical laser system (O2O) that demonstrated <strong>260 Mbps</strong> during Artemis II testing — a 5,000-fold increase.</p>
+      <h3>What about hazard avoidance for landing?</h3>
+      <p>Orion doesn't land on the Moon. Automated hazard avoidance belongs to the <strong>Human Landing System (HLS)</strong> vehicles like SpaceX's Starship HLS, which use <strong>Terrain Relative Navigation (TRN)</strong> and LIDAR — the job Apollo astronauts did entirely by eye.</p>
+    </div>
+  </section>
+
+  <hr class="sec">
+
+  <section class="section" id="compare">
+    <div class="wrap">
+      <p class="section-label">Chapter 3</p>
+      <h2>Side by side</h2>
+
+      <div class="ddc-wrap">
+        <div class="ddc-tabs">
+          <button class="ddc-tab on" data-k="speed">Speed</button>
+          <button class="ddc-tab" data-k="memory">Memory</button>
+          <button class="ddc-tab" data-k="code">Software</button>
+          <button class="ddc-tab" data-k="comms">Comms</button>
+        </div>
+        <div class="ddc-chart-h"><canvas id="dd-chart"></canvas></div>
+        <p class="ddc-cap" id="dd-cap"></p>
+      </div>
+
+      <h3>Redundancy architectures</h3>
+      <div class="arch-grid">
+        <div class="arch-p">
+          <div class="arch-hd ga">Apollo (1969)</div>
+          <div class="an">Analog sensors + Radar</div>
+          <div class="arc">↓</div>
+          <div class="an">DSKY (Astronaut keyboard + display)</div>
+          <div class="arc">↓</div>
+          <div class="an pa">One AGC · 72 KB ROM · 4 KB RAM</div>
+          <div class="arc">↓</div>
+          <div class="an dim">AGS Backup (abort only — TRW)</div>
+          <div class="arc">↓</div>
+          <div class="an">Thrusters &amp; engines</div>
+          <p class="arch-note">Strategy: Priority OS self-recovery + astronaut manual override + IBM mainframes at Mission Control tracking in parallel.</p>
+        </div>
+        <div class="arch-p">
+          <div class="arch-hd gb">Orion (2022)</div>
+          <div class="an">Digital sensor suite</div>
+          <div class="arc">↓</div>
+          <div class="an bus">TT-GbE Network · 1 Gbps (3 redundant links)</div>
+          <div class="arc">↓</div>
+          <div class="an-row">
+            <div class="an pb" style="font-size:11px;padding:7px 3px;">VMC 1</div>
+            <div class="an pb" style="font-size:11px;padding:7px 3px;">VMC 2</div>
+            <div class="an pb" style="font-size:11px;padding:7px 3px;">VMC 3</div>
+            <div class="an pb" style="font-size:11px;padding:7px 3px;">VMC 4</div>
+          </div>
+          <div class="arc">↓</div>
+          <div class="an dim">Backup (dissimilar independent software)</div>
+          <div class="arc">↓</div>
+          <div class="an">PDU priority tables → Engines</div>
+          <p class="arch-note">Each VMC acts independently. PDUs execute VMC 1's commands first, falling back automatically if it goes silent.</p>
+        </div>
+      </div>
+
+      <h3>Full specification table</h3>
+      <div style="overflow-x:auto;">
+        <table class="ctable">
+          <thead>
+            <tr><th>Spec</th><th style="color:var(--gold)">Apollo AGC</th><th style="color:var(--blue)">Orion VMC</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Processor</td><td class="col-a">Custom RTL ICs · 2 MHz</td><td class="col-b">IBM PowerPC 750FX (COTS, Honeywell-ruggedized)</td></tr>
+            <tr><td>Throughput</td><td class="col-a">~40,000–43,000 IPS (typical)</td><td class="col-b">~480–860 MIPS per VMC (estimated)</td></tr>
+            <tr><td>ROM</td><td class="col-a">~72 KB core rope (hand-woven)</td><td class="col-b">Flash / non-volatile (exact: not public)</td></tr>
+            <tr><td>RAM</td><td class="col-a">4 KB erasable core</td><td class="col-b">~512 MB EDAC-protected SDRAM (est.)</td></tr>
+            <tr><td>Software</td><td class="col-a">~145,000 lines assembly (Colossus + Luminary)</td><td class="col-b">~2.3 million lines (Orion) · ~50,000 (SLS)</td></tr>
+            <tr><td>Redundancy</td><td class="col-a">Single CPU + AGS backup + ground tracking</td><td class="col-b">4 primary + 1 dissimilar backup · priority failover</td></tr>
+            <tr><td>Network</td><td class="col-a">Point-to-point hardwiring</td><td class="col-b">TT-GbE · 1 Gbps · 3 redundant links (SAE AS6802)</td></tr>
+            <tr><td>Downlink</td><td class="col-a">Up to 51.2 kbps (USB S-Band)</td><td class="col-b">Up to 260 Mbps optical (O2O, Artemis II demo)</td></tr>
+            <tr><td>Encryption</td><td class="col-a">None — deliberately unencrypted</td><td class="col-b">AES · FIPS 140 L1 (NASA-STD-1006, 2019)</td></tr>
+            <tr><td>Hazard avoid.</td><td class="col-a">Manual only — astronaut eye + LPD window scale</td><td class="col-b">Orion: none. HLS landers: TRN + LIDAR</td></tr>
+            <tr><td>Radiation</td><td class="col-a">Inherent (core memory + large-geometry ICs)</td><td class="col-b">COTS screening + EDAC + 9-processor redundancy</td></tr>
+            <tr><td>RTOS</td><td class="col-a">Custom AGC "Executive" (priority cooperative)</td><td class="col-b">INTEGRITY-178 tuMP · ARINC 653 partitioning</td></tr>
+            <tr><td>Power · Mass</td><td class="col-a">55 W · 32 kg</td><td class="col-b">~20–30 W per VMC (est.) · significantly lighter</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <hr class="sec">
+
+  <section class="section" id="deeper">
+    <div class="wrap">
+      <p class="section-label">Chapter 4</p>
+      <h2>Questions you might be wondering about</h2>
+      <div class="acc">
+        <div class="acc-item">
+          <button class="acc-btn" onclick="tog(this)">If Apollo's computer was so primitive, how did it reliably land on the Moon?<span class="acc-arr">⌄</span></button>
+          <div class="acc-body"><div class="acc-in">
+            <p>Several things converged. The AGC's priority OS shed lower-priority tasks automatically under load, keeping guidance running even when overwhelmed — as it did five times during Apollo 11's landing. Core rope memory was inherently reliable and radiation-immune. The software was exhaustively tested with no way to patch it post-launch. And the astronauts themselves were the backup — the system kept human judgment in the loop at every critical phase.</p>
+          </div></div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-btn" onclick="tog(this)">What's the difference between the RAD750 and the IBM 750FX Orion actually uses?<span class="acc-arr">⌄</span></button>
+          <div class="acc-body"><div class="acc-in">
+            <p>The <strong>RAD750</strong> (BAE Systems) is radiation-hardened by design — built from the ground up for space, formally rated to 1 million rads, used on Curiosity and MRO. Cost: ~$200,000 per chip. Max speed ~200 MHz.</p>
+            <p>The <strong>IBM PowerPC 750FX</strong> is a commercial chip (the same family as the original Apple Power Mac G4). It runs up to 900 MHz commercially. Honeywell ruggedizes it with better boards, thermal management, and radiation screening, but it doesn't carry RAD750's formal hardness ratings. NASA chose it because Orion's mission profile — lunar flyby and return — exposes it to far less cumulative radiation than a multi-year deep-space mission. The EDAC memory protection and 9-processor redundancy handle the rest.</p>
+          </div></div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-btn" onclick="tog(this)">Why didn't Apollo encrypt its radio transmissions?<span class="acc-arr">⌄</span></button>
+          <div class="acc-body"><div class="acc-in">
+            <p>Entirely deliberate. 1960s encryption hardware meant weight, complexity, and failure modes — unacceptable on a vehicle where every gram mattered. The Soviets intercepted every Apollo transmission. Britain's Jodrell Bank Observatory did too. NASA's view: mission safety through simplicity far outweighed any security benefit.</p>
+            <p>Artemis operates under NASA-STD-1006 (2019), which mandates AES encryption for command uplinks. The threat model changed: modern spacecraft connect through networked infrastructure that didn't exist in 1969.</p>
+          </div></div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-btn" onclick="tog(this)">How is Artemis software developed compared to Apollo's hand-written assembly?<span class="acc-arr">⌄</span></button>
+          <div class="acc-body"><div class="acc-in">
+            <p>Apollo's software was written on paper, keypunched onto IBM cards, and compiled maybe once a day on a shared mainframe. Every line was hand-crafted assembly. Margaret Hamilton's team at MIT effectively invented software engineering in the process.</p>
+            <p>Orion's ~2.3 million lines use <strong>Model-Based Design</strong>: engineers build mathematical models in MATLAB/Simulink, and tools auto-generate the C++ code. The software runs on INTEGRITY-178 tuMP — a real-time OS certified to aviation safety standards, with ARINC 653 partitioning ensuring one software function literally cannot crash another. Over 300,000 mission scenarios were tested for SLS software alone.</p>
+          </div></div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-btn" onclick="tog(this)">What was Saturn V's own computer — separate from the AGC?<span class="acc-arr">⌄</span></button>
+          <div class="acc-body"><div class="acc-in">
+            <p>The Saturn V had its own: the <strong>IBM Launch Vehicle Digital Computer (LVDC)</strong>, handling everything from liftoff through Trans-Lunar Injection. 26-bit words, ~12,190 IPS, genuine triple modular redundancy (three processing paths voting on every output), 138 watts, and liquid cooling. Once the rocket's engines shut down and Orion separated, the AGC took over. Two very different computers solving two very different problems.</p>
+          </div></div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-btn" onclick="tog(this)">How much more power-efficient are modern spacecraft computers?<span class="acc-arr">⌄</span></button>
+          <div class="acc-body"><div class="acc-in">
+            <p>The AGC: ~43,000 IPS at 55 watts ≈ 780 instructions per second per watt. Orion VMCs: ~650 million IPS at ~25 watts ≈ 26 million instructions per watt. That's roughly a <strong>33,000-fold improvement in compute efficiency</strong>. Every kilogram launched costs thousands of dollars in fuel — lighter, more powerful computers are a core part of how we afford to go back.</p>
+          </div></div>
+        </div>
+      </div>
+
+      <h3 style="margin-top:40px;">Key milestones</h3>
+      <div class="tl">
+        <div class="tl-i"><div class="tl-dot ga"></div><div class="tl-yr">1961–1965</div><div class="tl-t">MIT builds the AGC — one of the first integrated-circuit computers. Consumes ~1,400 person-years. Coins the term "software engineering."</div></div>
+        <div class="tl-i"><div class="tl-dot ga"></div><div class="tl-yr">July 20, 1969</div><div class="tl-t">Apollo 11. AGC throws five overflow alarms, self-recovers each time. Armstrong dodges a boulder field by eye. 17 seconds of fuel remaining.</div></div>
+        <div class="tl-i"><div class="tl-dot ga"></div><div class="tl-yr">1972</div><div class="tl-t">Apollo 17, the last Moon mission. The AGC/LVDC architecture flew 17 crewed missions with no computer-caused fatalities.</div></div>
+        <div class="tl-i"><div class="tl-dot gn"></div><div class="tl-yr">1981–2011</div><div class="tl-t">Space Shuttle. Five computers run identical software and vote on every output — the architecture people mistakenly attribute to Orion.</div></div>
+        <div class="tl-i"><div class="tl-dot gb"></div><div class="tl-yr">Dec 2014</div><div class="tl-t">Orion EFT-1. First flight of Honeywell VMCs and TT-GbE. New architecture validated unmanned.</div></div>
+        <div class="tl-i"><div class="tl-dot gb"></div><div class="tl-yr">Nov 2022</div><div class="tl-t">Artemis I. Full 4+1 VMC configuration. 2.3 million lines of code perform without fault on a 25-day lunar flyby.</div></div>
+        <div class="tl-i"><div class="tl-dot gb"></div><div class="tl-yr">2025 (planned)</div><div class="tl-t">Artemis II. First crewed Orion. Optical O2O system targets 260 Mbps downlink from deep space.</div></div>
+      </div>
+
+      <div class="ibox" style="margin-top:40px;">
+        <div class="ibox-hd">Sources &amp; further reading</div>
+        <p style="font-size:13px;color:var(--ink2);line-height:1.7;">NASA SLS and Orion avionics documentation · <em>Military Embedded Systems</em> March 2015 interview with NASA's Matthew Lemke (primary source for VMC architecture and 750FX) · Ken Shirriff at <a href="https://righto.com" target="_blank">righto.com</a> · Virtual AGC project (ibiblio.org) · TTTech Aerospace TTE documentation · Judas &amp; Prokop, <em>Innovations in Systems and Software Engineering</em> (Orion 2.3M SLOC) · NASA-STD-1006 · <a href="https://github.com/chrislgarry/Apollo-11" target="_blank">github.com/chrislgarry/Apollo-11</a></p>
+      </div>
+    </div>
+  </section>
+
+  <div style="max-width:var(--max);margin:0 auto;">
+    <footer>
+      <p>Spaceflight Computing: Apollo → Artemis · All figures verified against primary sources.</p>
+      <p style="margin-top:6px;">Orion memory and power figures are estimates derived from public Lockheed Martin statements where exact specifications have not been released.</p>
+    </footer>
+  </div>
+
+</div><!-- /tab-deepdive -->
+
+<script>
+/* ── TAB SWITCHING ───────────────────────────────── */
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({top: 0, behavior: 'smooth'});
+  // trigger bar animations on summary
+  if (id === 'summary') animateBars();
+  if (id === 'deepdive') {
+    // trigger section reveals
+    document.querySelectorAll('.section').forEach(s => {
+      if (!s.classList.contains('vis')) revealObs.observe(s);
+    });
+    if (!ddChart) buildDDChart('speed');
+  }
+}
+
+/* ── READING PROGRESS ────────────────────────────── */
+window.addEventListener('scroll', () => {
+  const el = document.getElementById('progress');
+  const total = document.body.scrollHeight - window.innerHeight;
+  if (total > 0) el.style.width = Math.min(100, (window.scrollY / total) * 100) + '%';
+});
+
+/* ── SCROLL REVEAL (deep dive) ───────────────────── */
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); });
+}, { threshold: 0.06 });
+
+/* ── BAR ANIMATIONS (summary) ────────────────────── */
+function animateBars() {
+  document.querySelectorAll('.bar-fill[data-w]').forEach(bar => {
+    bar.style.width = '0%';
+    requestAnimationFrame(() => {
+      setTimeout(() => { bar.style.width = bar.dataset.w; }, 80);
+    });
+  });
+}
+// Animate on first load since summary is default
+window.addEventListener('load', () => setTimeout(animateBars, 100));
+
+/* ── ACCORDION ───────────────────────────────────── */
+function tog(btn) {
+  const body = btn.nextElementSibling;
+  const open = btn.classList.contains('open');
+  document.querySelectorAll('.acc-btn.open').forEach(b => {
+    b.classList.remove('open');
+    b.nextElementSibling.style.maxHeight = null;
+  });
+  if (!open) {
+    btn.classList.add('open');
+    body.style.maxHeight = body.scrollHeight + 'px';
+  }
+}
+
+/* ── DEEP DIVE CHART ─────────────────────────────── */
+const DD = {
+  speed: {
+    labels: ['AGC typical\n(~43K IPS)', 'AGC peak\n(~85K IPS)', 'Orion VMC low\n(~480M IPS)', 'Orion VMC high\n(~860M IPS)'],
+    vals: [43000, 85300, 480000000, 860000000],
+    cols: ['#b5620a','#d4943a','#0a4b8c','#3a9fd4'], log: true,
+    cap: 'Logarithmic scale — needed because the gap is 4 orders of magnitude. "Typical" AGC (43K IPS) reflects real mixed-instruction workloads; the 85K peak only applies to simple single-cycle instructions. Orion\'s figure is estimated from Lockheed Martin\'s public "400× faster than Shuttle" statement.'
+  },
+  memory: {
+    labels: ['AGC RAM\n(4 KB)', 'AGC ROM\n(~72 KB)', 'Orion VMC\n(~512 MB est.)'],
+    vals: [4096, 73728, 536870912],
+    cols: ['#b5620a','#d4943a','#0a4b8c'], log: true,
+    cap: 'Logarithmic scale. AGC ROM is ~72 KB — 36,864 words × 16 bits each. Orion\'s ~512 MB estimate comes from Lockheed Martin\'s "128,000× more memory than Apollo": 128,000 × 4,096 bytes = ~512 MB. Exact figure not publicly released.'
+  },
+  code: {
+    labels: ['Apollo\n(Colossus + Luminary)', 'SLS rocket\n(~8 min flight)', 'Orion capsule\n(full mission)'],
+    vals: [145000, 50000, 2300000],
+    cols: ['#b5620a','#3a9fd4','#0a4b8c'], log: false,
+    cap: 'Linear scale. Apollo\'s ~145K lines are combined assembly listings including comments and directives. SLS software is small because the rocket only operates for ~8 minutes. Orion\'s 2.3M figure is from a peer-reviewed NASA study.'
+  },
+  comms: {
+    labels: ['Apollo S-Band\n(51 kbps)', 'Orion S-Band', 'Orion Ka-Band', 'Orion Optical\n(260 Mbps)'],
+    vals: [51200, 1000000, 25000000, 260000000],
+    cols: ['#b5620a','#9ec3ee','#3a9fd4','#0a4b8c'], log: true,
+    cap: 'Logarithmic scale. Apollo maxed at 51.2 kbps. The O2O optical laser system demonstrated 260 Mbps during Artemis II testing — a ~5,000× increase. Enables HD video streaming from lunar orbit.'
+  }
+};
+let ddChart;
+function buildDDChart(k) {
+  const d = DD[k];
+  const ctx = document.getElementById('dd-chart');
+  if (ddChart) ddChart.destroy();
+  const fontCfg = { family: 'Plus Jakarta Sans', size: 11 };
+  ddChart = new Chart(ctx, {
+    type: 'bar',
+    data: { labels: d.labels, datasets: [{ data: d.vals, backgroundColor: d.cols.map(c=>c+'cc'), borderColor: d.cols, borderWidth: 2, borderRadius: 6 }] },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1c1c1e', titleColor: '#fff', bodyColor: '#ccc',
+          padding: 10, cornerRadius: 6,
+          titleFont: { family: 'Plus Jakarta Sans', size: 13 },
+          bodyFont: { family: 'Plus Jakarta Sans', size: 12 },
+          callbacks: { label: c => { const v=c.parsed.y; return v>=1e9?` ${(v/1e9).toFixed(1)}B`:v>=1e6?` ${(v/1e6).toFixed(1)}M`:v>=1e3?` ${(v/1e3).toFixed(0)}K`:` ${v}`; } }
+        }
+      },
+      scales: {
+        y: { type: d.log?'logarithmic':'linear', grid:{color:'#dddbd5'}, ticks:{ color:'#636366', font:fontCfg, callback: v=>v>=1e9?(v/1e9).toFixed(0)+'B':v>=1e6?(v/1e6).toFixed(0)+'M':v>=1e3?(v/1e3).toFixed(0)+'K':v } },
+        x: { grid:{display:false}, ticks:{color:'#3a3a3c',font:fontCfg,maxRotation:0} }
+      }
+    }
+  });
+  document.getElementById('dd-cap').textContent = d.cap;
+}
+document.querySelectorAll('.ddc-tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.ddc-tab').forEach(b => b.classList.remove('on'));
+    btn.classList.add('on');
+    buildDDChart(btn.dataset.k);
+  });
+});
+</script>
+</body>
+</html>
