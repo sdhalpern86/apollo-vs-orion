@@ -122,12 +122,16 @@ a{color:var(--blue);text-underline-offset:3px;}
 /* ── COMPARISON HERO CARDS ── */
 .era-cards{
   display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:4px;
+  align-items:stretch;
 }
 @media(max-width:480px){.era-cards{grid-template-columns:1fr;}}
 
 .era-card{
   border-radius:var(--r);padding:20px;border:1px solid var(--rule);
   background:var(--white);
+  display:flex;
+  flex-direction:column;
+  height:100%;
 }
 .era-card.apollo{border-top:4px solid var(--gold);}
 .era-card.artemis{border-top:4px solid var(--blue);}
@@ -146,9 +150,14 @@ a{color:var(--blue);text-underline-offset:3px;}
   font-family:var(--font-serif);font-size:1.15rem;font-weight:700;
   color:var(--ink);margin-bottom:4px;
 }
-.era-desc{font-size:13px;color:var(--ink3);line-height:1.5;margin-bottom:16px;}
+.era-desc{
+  font-size:13px;color:var(--ink3);line-height:1.5;margin-bottom:16px;
+  flex-grow:1;
+}
 
-.era-specs{}
+.era-specs{
+  margin-top:auto;
+}
 .era-spec-row{
   display:flex;justify-content:space-between;align-items:baseline;
   padding:7px 0;border-bottom:1px solid var(--rule);gap:8px;font-size:14px;
